@@ -13,6 +13,11 @@ class UserController {
         render (view: 'show', model: [User.findByUsername(params.username)])
     }
 
+    def view() {
+        flash.message = "Authenticated User Found"
+        [User.findByUsername(session.username)]
+    }
+
     def save(UserCO co) {
         if (co.validate()) {
             userService.save(co)
