@@ -20,5 +20,20 @@ def grailsApplication
         user.password = co.newPassword
         user.save(flush: true)
     }
+
+    String calculateSomething(){
+        Integer total = CommonUtil.getTotalTokens()
+        return "Total count is "+total
+    }
+
+    String getUserName(UserCO co){
+        try {
+            throw new NullPointerException("invalid co")
+        }catch (NullPointerException e){
+
+        }
+    }
+
+
 	
 }
