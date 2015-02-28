@@ -6,7 +6,7 @@ class User{
     String givenName
     String familyName
 	String password
-	boolean enabled = true
+	boolean enabled = false
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired

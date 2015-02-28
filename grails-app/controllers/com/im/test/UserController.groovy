@@ -27,6 +27,16 @@ class UserController {
         }
     }
 
+    def saveAndLogin(UserCO co) {
+        User user = userService.save(co)
+        if (user.enabled) {
+            redirect(action: 'view')
+        } else {
+            render(view: 'create')
+        }
+    }
+
+
     def updatePassword(UpdatePasswordCO co) {
         try {
             userService.updatePassword(co)
