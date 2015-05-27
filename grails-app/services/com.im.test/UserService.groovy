@@ -16,6 +16,9 @@ def grailsApplication
     }
 
     void updatePassword(UpdatePasswordCO co) {
+        if(!co.validate()){
+            throw new Exception("Invalid data")
+        }
         User user = User.findByUsername(co.id)
         user.password = co.newPassword
         user.save(flush: true)
