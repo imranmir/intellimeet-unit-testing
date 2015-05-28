@@ -33,21 +33,22 @@ class UserControllerSpec extends Specification {
         when: "Show action is called with username in params"
         controller.show()
 
-        then:"show action should be rendered with the user in the model"
-        view=='/user/show'
-        model.user.id==user.id
+        then: "show action should be rendered with the user in the model"
+        view == '/user/show'
+        model.user.id == user.id
     }
 
 
-    void "Save action is able to correclty execute save flow"() {
+    @Unroll("Save action is able to correclty execute save flow when #description")
+    void "Save action is able to correclty execute save flow when "() {
         given: "Initialize UserCO"
-        UserCO co = new UserCO(username: 'username', givenName: 'givenName', familyName: 'familyName', password: 'password', confirmPassword: 'password')
+        UserCO co = new UserCO(username: 'username', givenName: 'givenName', familyName: 'familyName', password: 'password', confirmPassword: validFlow?'password': 'pwd')
 
         and: "mock UserService and its save method"
         def userService = Mock(UserService)
         controller.userService = userService
 
-        1 * userService.save(_) >> new User(id: 1, username: 'usrename').save(validate: false)
+        (validFlow?1:0) * userService.save(_) >> new User(id: 1, username: 'usrename').save(validate: false)
 
         and: "Request method is post"
         request.method = "POST"
@@ -56,9 +57,13 @@ class UserControllerSpec extends Specification {
         controller.save(co)
 
         then:
-        response.contentAsString=="User created with role user"
-        response.status == 201
+        response.contentAsString == contentString
+        response.status == status
 
+        where:
+        description                | validFlow | contentString                 | status
+        "When co has valid data"   | true      | "User created with role user" | 201
+        "When co has invalid data" | false     | "Error"                       | 400
     }
 
 
