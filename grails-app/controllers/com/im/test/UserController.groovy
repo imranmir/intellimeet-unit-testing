@@ -10,7 +10,11 @@ class UserController {
 
 
     def show() {
-        render (view: 'show', model: [User.findByUsername(params.username)])
+        render (view: 'show', model: [user: User.findByUsername(params.username)])
+    }
+
+    def showWithImplicitView(){
+        [user: User.findByUsername(params.username)]
     }
 
     def view() {
